@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>梅朵冈兰·谧境 | 云端餐厅</title>
+<style>
+
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C96A;
+  --tibet-red: #8B1A1A;
+  --tibet-red-light: #B22222;
+  --bg: #0D0A07;
+  --bg-card: #1A1510;
+  --bg-card-hover: #221C14;
+  --text: #F5EFE0;
+  --text-sub: #A89870;
+  --border: rgba(201,168,76,0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 32px 20px 16px;
+  background: linear-gradient(180deg, #1a1208 0%, var(--bg) 100%);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+.header-brand {
+  font-family: 'Noto Serif SC', 'STSong', 'Songti SC', 'SimSun', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 4px;
+}
+.header-sub {
+  font-size: 11px;
+  color: var(--text-sub);
+  letter-spacing: 6px;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+.header-tagline {
+  font-size: 12px;
+  color: var(--text-sub);
+  margin-top: 8px;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+/* Tab bar */
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 12px 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  position: sticky;
+  top: 100px;
+  background: var(--bg);
+  z-index: 99;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  flex-shrink: 0;
+  padding: 8px 18px;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-sub);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.25s;
+  white-space: nowrap;
+}
+.tab.active {
+  background: var(--tibet-red);
+  border-color: var(--tibet-red-light);
+  color: var(--gold-light);
+  font-weight: 600;
+}
+.tab:active { transform: scale(0.95); }
+
+/* Category title */
+.cat-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 20px 12px;
+}
+.cat-title span {
+  font-family: 'Noto Serif SC', 'STSong', 'Songti SC', 'SimSun', serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 3px;
+}
+.cat-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+  opacity: 0.3;
+}
+
+/* Dish card */
+.dish-card {
+  margin: 6px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: background 0.2s;
+}
+.dish-card:active { background: var(--bg-card-hover); }
+
+.dish-emoji {
+  font-size: 32px;
+  line-height: 1;
+  flex-shrink: 0;
+  width: 48px;
+  text-align: center;
+}
+.dish-info { flex: 1; min-width: 0; }
+.dish-name {
+  font-family: 'Noto Serif SC', 'STSong', 'Songti SC', 'SimSun', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+.dish-desc {
+  font-size: 11px;
+  color: var(--text-sub);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+.dish-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gold);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Package block */
+.pk-block {
+  margin: 6px 16px;
+  background: var(--bg-card);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.pk-header {
+  background: linear-gradient(90deg, rgba(139,26,26,0.4), transparent);
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  font-family: 'Noto Serif SC', 'STSong', 'Songti SC', 'SimSun', serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gold-light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pk-note {
+  font-size: 10px;
+  color: var(--text-sub);
+  padding: 8px 16px 4px;
+  line-height: 1.5;
+}
+.pk-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+}
+.pk-item:last-child { border-bottom: none; }
+.pk-size { color: var(--text); font-weight: 400; }
+.pk-size span { color: var(--text-sub); font-size: 11px; margin-left: 6px; }
+.pk-price { color: var(--gold); font-weight: 600; }
+.pk-sides {
+  display: none;
+  padding: 6px 16px 10px;
+  font-size: 11px;
+  color: var(--text-sub);
+  line-height: 1.6;
+  background: rgba(0,0,0,0.2);
+}
+.pk-sides.show { display: block; }
+.pk-toggle {
+  font-size: 10px;
+  color: var(--gold);
+  cursor: pointer;
+  padding: 0 16px 8px;
+  display: block;
+}
+
+/* Section divider */
+.section-note {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-sub);
+  padding: 16px;
+  letter-spacing: 2px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 32px 20px;
+  font-size: 11px;
+  color: var(--text-sub);
+  line-height: 1.8;
+  border-top: 1px solid var(--border);
+  margin-top: 24px;
+}
+.footer .brand {
+  font-family: 'Noto Serif SC', 'STSong', 'Songti SC', 'SimSun', serif;
+  color: var(--gold);
+  font-size: 14px;
+  letter-spacing: 3px;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.dish-card, .pk-block { animation: fadeInUp 0.4s ease both; }
+.dish-card:nth-child(1), .pk-block { animation-delay: 0.05s; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; opacity: 0.4; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-brand">梅朵冈兰 · 谧境</div>
+  <div class="header-sub">MARSH</div>
+  <div class="header-tagline">云端餐厅 · 风味珍藏</div>
+</div>
+
+<div class="tabs" id="tabs"></div>
+<div id="menu-content"></div>
+
+<div class="footer">
+  <div class="brand">梅朵冈兰 · 谧境</div>
+  <div style="margin-top:8px;">若尔盖唐热路热瓦之家园骑马场东260米</div>
+  <div style="margin-top:4px;">☎ 18828810313</div>
+  <div style="margin-top:8px; opacity:0.5;">welcome to marsh</div>
+</div>
+
+<script>
+const CATEGORIES = [
+  { id: 'hotpot', label: '🍲 汤锅', icon: '🍲' },
+  { id: 'stirfry', label: '🥘 小炒', icon: '🥘' },
+  { id: 'cold', label: '🥒 凉菜', icon: '🥒' },
+  { id: 'bbq', label: '🔥 烧烤', icon: '🔥' },
+  { id: 'shrimp', label: '🦞 小龙虾', icon: '🦞' },
+];
+
+const MENU = {
+  hotpot: [
+    {
+      type: 'title', name: '云端泡椒魔芋鸭煲', sub: '红汤 · 麻辣', price: null,
+      desc: '鸭肉600g起 · 魔芋 · 泡椒锅底', emoji: '🦆',
+      packages: [
+        { size: '2人餐', price: '298元', sides: '牦牛吊龙、青笋片、娃娃菜、土豆、花生米' },
+        { size: '3-4人餐', price: '398元', sides: '牦牛吊龙、脖仁、海鲜菇、凤尾、青笋片、宽粉、花生米' },
+        { size: '6-8人餐', price: '598元', sides: '牦牛吊龙、脖仁、匙仁、萝卜、娃娃菜、海鲜菇、青笋片、菠菜、藕片、花生米' },
+      ]
+    },
+    {
+      type: 'title', name: '云端腊排骨鸡汤锅', sub: '清汤 / 红汤', price: null,
+      desc: '腊排+鸡肉 · 虫草花 · 鸡松茸', emoji: '🍗',
+      packages: [
+        { size: '2人餐', price: '298元', sides: '牦牛吊龙、莲藕、土豆、菠菜、海鲜菇、花生米' },
+        { size: '3-4人餐', price: '498元', sides: '牦牛吊龙、匙仁、凤尾、萝卜、娃娃菜、菠菜、山药、花生米' },
+        { size: '6-8人餐', price: '698元', sides: '牦牛脖仁、牦牛匙仁、牦牛吊龙、黄瓜条、海鲜菇、萝卜、娃娃菜、菠菜、山药、青笋条、花生米' },
+      ]
+    },
+    {
+      type: 'title', name: '云端原汤牦牛汤锅', sub: '清汤 / 红汤', price: null,
+      desc: '牦牛腩600g起 · 野生松茸 · 虫草花', emoji: '🥩',
+      packages: [
+        { size: '2人餐', price: '398元', sides: '牦牛吊龙、青笋条、山药、菠菜、海鲜菇、花生米' },
+        { size: '3-4人餐', price: '698元', sides: '牦牛吊龙、牦牛匙仁、凤尾、冬瓜、菠菜、娃娃菜、山药、花生米' },
+        { size: '6-8人餐', price: '998元', sides: '牦牛脖仁、牦牛匙仁、牦牛吊龙、海鲜菇、娃娃菜、菠菜、山药、南瓜、青笋条、花生米' },
+      ]
+    },
+  ],
+  stirfry: [
+    { type: 'dish', name: '藏香猪回锅肉', desc: '川味经典 · 藏香猪 · 蒜苗', price: '128元', emoji: '🐷' },
+    { type: 'dish', name: '小炒牦牛肉', desc: '猛火爆炒 · 牦牛肉 · 锅气十足', price: '78元', emoji: '🥩' },
+    { type: 'dish', name: '阿妈味道香肠', desc: '川式腊香肠 · 蒜香', price: '58元', emoji: '🌭' },
+    { type: 'dish', name: '云端秘制板鸭', desc: '秘制风味 · 板鸭', price: '88元', emoji: '🦆' },
+    { type: 'dish', name: '蒜苗回锅肉', desc: '蒜苗 · 回锅肉', price: '58元', emoji: '🐷' },
+    { type: 'dish', name: '羌寨老腊肉', desc: '羌寨传统 · 老腊肉', price: '78元', emoji: '🥓' },
+    { type: 'dish', name: '番茄炒蛋', desc: '酸甜家常', price: '28元', emoji: '🍳' },
+    { type: 'dish', name: '酸辣土豆丝', desc: '酸辣爽口', price: '28元', emoji: '🥔' },
+    { type: 'dish', name: '蒜泥凤尾', desc: '蒜香蔬菜', price: '28元', emoji: '🥬' },
+    { type: 'dish', name: '炝炒莲白', desc: '爆炒莲白', price: '28元', emoji: '🥬' },
+    { type: 'dish', name: '紫菜蛋花汤', desc: '汤品', price: '28元', emoji: '🍲' },
+    { type: 'dish', name: '煎蛋汤', desc: '汤品', price: '28元', emoji: '🍲' },
+    { type: 'dish', name: '水晶滑肉汤', desc: '汤品', price: '38元', emoji: '🍲' },
+  ],
+  cold: [
+    { type: 'dish', name: '凉拌黄瓜', desc: '凉菜小食', price: '18元/份', emoji: '🥒' },
+    { type: 'dish', name: '香酥花生米', desc: '凉菜小食', price: '18元/份', emoji: '🥜' },
+    { type: 'dish', name: '秘卤牦牛肉', desc: '秘卤风味', price: '68元/份', emoji: '🥩' },
+    { type: 'dish', name: '麻辣冷吃兔', desc: '麻辣冷吃', price: '58元/份', emoji: '🐰' },
+    { type: 'dish', name: '手工小酥肉', desc: '手工酥肉', price: '28元/份', emoji: '🍖' },
+    { type: 'dish', name: '麻酱怪味花生米', desc: '麻酱风味', price: '18元/份', emoji: '🥜' },
+  ],
+  shrimp: [
+    {
+      type: 'title', name: '云端口味虾', sub: '夏日限定', price: null, emoji: '🦞',
+      packages: [
+        { size: '麻辣嗦指小龙虾', price: '68元/斤', sides: '两斤起售' },
+        { size: '经典蒜蓉小龙虾', price: '68元/斤', sides: '两斤起售' },
+        { size: '招牌卤味小龙虾', price: '68元/斤', sides: '两斤起售' },
+        { size: '泡椒火锅小龙虾', price: '68元/斤', sides: '两斤起售' },
+      ]
+    },
+  ],
+  bbq: [
+    { type: 'dish', name: '原味高原牦牛肉·吊龙', desc: '150g · 片状 · 原味', price: '68元', emoji: '🥩' },
+    { type: 'dish', name: '藏香秘制牦牛肉·雪花', desc: '150g · 窄条 · 原味', price: '78元', emoji: '🥩' },
+    { type: 'dish', name: '秘制香辣牦牛肉·雪花', desc: '150g · 窄条 · 腌制', price: '78元', emoji: '🌶️' },
+    { type: 'dish', name: '秘制香辣藏香猪五花', desc: '150g · 片状 · 腌制', price: '78元', emoji: '🐷' },
+    { type: 'dish', name: '秘制牦牛舌', desc: '100g · 片状 · 腌制', price: '88元', emoji: '🐄' },
+    { type: 'dish', name: '原切高山猪五花', desc: '150g · 片状 · 原味', price: '58元', emoji: '🐷' },
+    { type: 'dish', name: '藏香蜜汁鸡中翅', desc: '4个 · 藤椒/香辣', price: '48元', emoji: '🍗' },
+    { type: 'dish', name: '秘制猪小肠', desc: '150g · 段 · 腌制', price: '58元', emoji: '🐷' },
+    { type: 'dish', name: '泡椒小鲫鱼', desc: '2条 · 整条 · 腌制', price: '58元', emoji: '🐟' },
+    { type: 'dish', name: '高山彩椒羊肉串', desc: '4串 · 块状中大串 · 原味', price: '68元', emoji: '🐏' },
+    { type: 'dish', name: '安格斯原味和牛M5', desc: '150g · 宽条状 · 不宜久烤', price: '88元', emoji: '🥩' },
+    { type: 'dish', name: '安格斯原味和牛M8', desc: '150g · 宽条状 · 不宜久烤', price: '98元', emoji: '🥩' },
+    { type: 'dish', name: '— 素菜 —', desc: '生菜、金针菇、杏鲍菇、韭菜等', price: '', emoji: '🥬' },
+    { type: 'dish', name: '菌类拼盘', desc: '150g', price: '38元', emoji: '🍄' },
+    { type: 'dish', name: '高山土豆片', desc: '100g', price: '38元', emoji: '🥔' },
+    { type: 'dish', name: '手工馒头', desc: '4个', price: '28元', emoji: '🥟' },
+  ],
+};
+
+function renderPK(pack) {
+  return `
+    <div class="pk-item">
+      <div class="pk-size">${pack.size}</div>
+      <div class="pk-price">${pack.price}</div>
+    </div>
+    ${pack.sides ? `<div class="pk-sides show">${pack.sides}</div>` : ''}`;
+}
+
+function renderDish(item) {
+  return `
+    <div class="dish-card">
+      <div class="dish-emoji">${item.emoji}</div>
+      <div class="dish-info">
+        <div class="dish-name">${item.name}</div>
+        ${item.desc ? `<div class="dish-desc">${item.desc}</div>` : ''}
+      </div>
+      ${item.price ? `<div class="dish-price">${item.price}</div>` : ''}
+    </div>`;
+}
+
+function renderSection(section) {
+  if (section.type === 'title') {
+    return `
+    <div class="cat-title">
+      <span>${section.emoji} ${section.name}</span>
+    </div>
+    <div class="pk-block">
+      <div class="pk-header">⬛ ${section.name} · ${section.sub || ''}</div>
+      ${section.desc ? `<div class="pk-note">${section.desc}</div>` : ''}
+      ${section.packages.map(renderPK).join('')}
+    </div>`;
+  }
+  return renderDish(section);
+}
+
+function renderCat(catId) {
+  const cat = MENU[catId];
+  if (!cat) return '';
+  return cat.map(renderSection).join('');
+}
+
+function buildTabs() {
+  const tabsEl = document.getElementById('tabs');
+  CATEGORIES.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'tab' + (c.id === 'hotpot' ? ' active' : '');
+    btn.textContent = c.label;
+    btn.dataset.cat = c.id;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('menu-content').innerHTML = renderCat(c.id);
+      window.scrollTo({ top: 120, behavior: 'smooth' });
+    });
+    tabsEl.appendChild(btn);
+  });
+}
+
+// Build tab bar
+buildTabs();
+// Show hotpot by default
+document.getElementById('menu-content').innerHTML = renderCat('hotpot');
+</script>
+</body>
+</html>
