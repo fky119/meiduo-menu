@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>梅朵冈兰 · 谧境 | MARSH 庄园 · 云境膳堂</title>
+<title>梅朵冈兰 · 谧境 | MARSH 庄园</title>
 <style>
 
 :root {
@@ -29,51 +29,68 @@ body {
   overflow-x: hidden;
 }
 
-/* Header */
+/* Top bar — header + tabs fixed together */
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+}
 .header {
   text-align: center;
   padding: 32px 20px 16px;
   background: linear-gradient(180deg, #1a1208 0%, var(--bg) 100%);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  backdrop-filter: blur(10px);
 }
 .header-brand {
   font-family: 'Noto Serif SC', 'STSong', 'Songti SC', 'SimSun', serif;
   font-size: 22px;
   font-weight: 700;
   color: var(--gold);
-  letter-spacing: 4px;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 .header-sub {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-sub);
-  letter-spacing: 6px;
+  letter-spacing: 4px;
   margin-top: 4px;
-  text-transform: uppercase;
 }
-.header-tagline {
-  font-size: 12px;
-  color: var(--text-sub);
+.header-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+  margin: 12px auto;
+  opacity: 0.4;
+}
+.header-restaurant {
+  font-family: 'Noto Serif SC', 'STSong', 'Songti SC', 'SimSun', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-light);
+  letter-spacing: 3px;
+}
+.table-badge {
+  display: inline-block;
   margin-top: 8px;
-  font-style: italic;
-  letter-spacing: 1px;
+  padding: 4px 14px;
+  border-radius: 12px;
+  background: rgba(201,168,76,0.12);
+  color: var(--gold-light);
+  font-size: 12px;
+  letter-spacing: 2px;
+  border: 1px solid rgba(201,168,76,0.2);
 }
+.table-badge.hidden { display: none; }
 
 /* Tab bar */
 .tabs {
   display: flex;
-  gap: 4px;
-  padding: 12px 16px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  position: sticky;
-  top: 100px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 12px;
   background: var(--bg);
-  z-index: 99;
 }
-.tabs::-webkit-scrollbar { display: none; }
 .tab {
   flex-shrink: 0;
   padding: 8px 18px;
@@ -93,6 +110,24 @@ body {
   font-weight: 600;
 }
 .tab:active { transform: scale(0.95); }
+.tab.highlight {
+  border-color: var(--gold);
+  background: rgba(201,168,76,0.08);
+  color: var(--gold-light);
+  font-weight: 600;
+}
+.tab.highlight.active {
+  background: var(--tibet-red);
+  color: var(--gold-light);
+}
+.tab-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--gold);
+  opacity: 0.3;
+  align-self: center;
+  margin: 0 6px;
+}
 
 /* Category title */
 .cat-title {
@@ -221,10 +256,152 @@ body {
   letter-spacing: 2px;
 }
 
-/* Footer */
+/* Drink section header */
+.drink-section {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gold-light);
+  letter-spacing: 4px;
+  padding: 18px 20px 8px;
+  font-family: 'Noto Serif SC', serif;
+}
+.drink-section::before,
+.drink-section::after {
+  content: '·';
+  color: var(--gold);
+  margin: 0 10px;
+  opacity: 0.5;
+}
+.drink-section.cocktail {
+  color: #e8a0c0;
+  text-shadow: 0 0 12px rgba(232,160,192,0.15);
+}
+
+/* Qty buttons */
+.dish-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+.qty-btn {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--gold);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.qty-btn:active { background: var(--gold); color: var(--bg); }
+.qty-btn.add { background: rgba(201,168,76,0.15); }
+.qty-num {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gold-light);
+  min-width: 18px; text-align: center;
+}
+
+/* Cart bar */
+.cart-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: #1a1510; border-top: 1px solid var(--border);
+  padding: 12px 16px;
+  z-index: 200;
+  display: flex; align-items: center; gap: 12px;
+  backdrop-filter: blur(10px);
+}
+.cart-info { flex: 1; cursor: pointer; }
+.cart-count {
+  color: var(--gold-light); font-weight: 700; font-size: 15px;
+}
+.cart-total {
+  color: var(--text-sub); font-size: 12px; margin-top: 2px;
+}
+.cart-submit {
+  background: var(--tibet-red);
+  color: var(--gold-light);
+  border: none; border-radius: 24px;
+  padding: 10px 24px; font-size: 14px; font-weight: 600;
+  cursor: pointer; white-space: nowrap;
+}
+.cart-submit:active { background: var(--tibet-red-light); }
+.cart-bar.hidden { display: none; }
+.pb-80 { padding-bottom: 80px; }
+
+/* Order panel */
+.order-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  z-index: 300; display: none; align-items: flex-end; justify-content: center;
+}
+.order-overlay.show { display: flex; }
+.order-panel {
+  background: var(--bg-card); width: 100%; max-width: 500px;
+  border-radius: 16px 16px 0 0; padding: 24px 20px 32px;
+  animation: fadeInUp 0.3s ease;
+}
+.order-panel h3 { color: var(--gold); font-size: 16px; margin-bottom: 12px; text-align: center; }
+.order-panel label { color: var(--text-sub); font-size: 12px; display: block; margin-bottom: 4px; }
+.order-panel input {
+  width: 100%; padding: 10px 14px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--bg);
+  color: var(--text); font-size: 14px; margin-bottom: 12px;
+}
+.order-items { max-height: 200px; overflow-y: auto; margin-bottom: 12px; }
+.order-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 0; border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.order-item .oi-name { color: var(--text); flex:1; }
+.order-item .oi-qty { color: var(--gold); margin: 0 8px; }
+.order-item .oi-sub { color: var(--text-sub); font-size: 11px; }
+.order-total-row { display: flex; justify-content: space-between; padding: 10px 0; color: var(--gold-light); font-weight: 700; font-size: 15px; }
+.order-actions { display: flex; gap: 10px; }
+.btn-copy { flex:1; padding: 12px; border-radius: 24px; border: none; background: var(--gold); color: var(--bg); font-size: 15px; font-weight: 700; cursor: pointer; }
+.btn-close { padding: 12px 20px; border-radius: 24px; border: 1px solid var(--border); background: transparent; color: var(--text-sub); font-size: 14px; cursor: pointer; }
+.btn-copy:active { opacity: 0.8; }
+.toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: rgba(0,0,0,0.85); color: var(--gold-light); padding: 14px 28px; border-radius: 12px; font-size: 14px; z-index: 400; opacity:0; transition: opacity 0.3s; pointer-events: none; }
+.toast.show { opacity:1; }
+
+/* My orders button */
+.my-orders-btn {
+  position: fixed; bottom: 80px; right: 16px; z-index: 190;
+  background: var(--bg-card); border: 1px solid var(--gold);
+  color: var(--gold-light); border-radius: 24px;
+  padding: 10px 18px; font-size: 13px; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+  display: none; align-items: center; gap: 6px;
+}
+.my-orders-btn.show { display: flex; }
+
+/* Order confirm panel */
+.confirm-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  z-index: 300; display: none; align-items: center; justify-content: center;
+}
+.confirm-overlay.show { display: flex; }
+.confirm-panel {
+  background: var(--bg-card); width: 90%; max-width: 400px;
+  border-radius: 16px; padding: 24px 20px; text-align: center;
+}
+.confirm-panel h3 { color: var(--green); font-size: 18px; margin-bottom: 4px; }
+.confirm-panel .sub { color: var(--text-sub); font-size: 12px; margin-bottom: 12px; }
+.confirm-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; text-align: left; }
+.confirm-total { margin-top: 10px; font-weight: 700; color: var(--gold-light); font-size: 16px; }
+.confirm-close { margin-top: 16px; padding: 10px 40px; border-radius: 24px; border: 1px solid var(--border); background: transparent; color: var(--text); font-size: 14px; cursor: pointer; }
+.confirm-history { margin-top: 12px; font-size: 12px; color: var(--text-sub); }
+.confirm-history .old-order { padding: 8px 0; border-top: 1px dashed var(--border); text-align: left; }
+.confirm-history .old-order .oo-time { color: var(--text-sub); font-size: 11px; }
+.confirm-history .old-order .oo-item { font-size: 12px; color: var(--text); }
 .footer {
   text-align: center;
-  padding: 32px 20px;
+  padding: 32px 20px 80px;
   font-size: 11px;
   color: var(--text-sub);
   line-height: 1.8;
@@ -254,125 +431,216 @@ body {
 </head>
 <body>
 
+<div class="top-bar">
 <div class="header">
   <div class="header-brand">梅朵冈兰 · 谧境 | MARSH 庄园</div>
-  <div class="header-sub">MARSH</div>
-  <div class="header-tagline">MARSH 庄园 · 云境膳堂</div>
+  <div class="header-sub">若尔盖 · 辖曼</div>
+  <div class="header-divider"></div>
+  <div class="header-restaurant">སྨུག་སྤྲིན་གསོལ་སྐྱེམས།  · 云境 膳堂</div>
+  <div class="table-badge hidden" id="table-badge"></div>
 </div>
 
 <div class="tabs" id="tabs"></div>
+<div style="text-align:center;font-size:10px;color:var(--text-sub);padding:4px 0;letter-spacing:2px;">🍚 米饭免费 · 茶水免费</div>
+</div>
 <div id="menu-content"></div>
+
+<div class="cart-bar hidden" id="cart-bar">
+  <div class="cart-info" id="cart-info">
+    <div class="cart-count" id="cart-count">未选菜品</div>
+    <div class="cart-total" id="cart-total"></div>
+  </div>
+  <button class="cart-submit" id="cart-submit">下单</button>
+</div>
+
+<div class="order-overlay" id="order-overlay">
+  <div class="order-panel">
+    <h3>确认订单</h3>
+    <label id="table-label">桌号 / 房号</label>
+    <input type="text" id="table-no" placeholder="如：3号桌 / 201房" style="display:block;">
+    <input type="hidden" id="table-no-hidden">
+    <div class="order-items" id="order-items"></div>
+    <div class="order-total-row">
+      <span>合计</span>
+      <span id="order-total"></span>
+    </div>
+    <div class="order-actions">
+      <button class="btn-copy" id="btn-copy">复制订单发送微信</button>
+      <button class="btn-close" id="btn-close">关闭</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<button class="my-orders-btn" id="my-orders-btn" onclick="showMyOrders()">📋 我的订单</button>
+
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-panel">
+    <h3>✅ 下单成功</h3>
+    <div class="sub">服务员已收到，请稍候</div>
+    <div id="confirm-items"></div>
+    <div class="confirm-total" id="confirm-total"></div>
+    <div class="confirm-history" id="confirm-history"></div>
+    <button class="confirm-close" onclick="closeConfirm()">知道了</button>
+  </div>
+</div>
 
 <div class="footer">
   <div class="brand">梅朵冈兰 · 谧境 | MARSH 庄园</div>
+  <div style="font-size:11px;color:var(--text-sub);letter-spacing:3px;">若尔盖 · 辖曼</div>
+  <div style="margin-top:4px;color:var(--gold-light);">སྨུག་སྤྲིན་གསོལ་སྐྱེམས།  · 云境 膳堂</div>
   <div style="margin-top:8px;">若尔盖唐热路热瓦之家园骑马场东260米</div>
   <div style="margin-top:4px;">☎ 18828810313</div>
-  <div style="margin-top:8px; opacity:0.5;">welcome to marsh</div>
 </div>
 
 <script>
 const CATEGORIES = [
-  { id: 'hotpot', label: '🍲 汤锅', icon: '🍲' },
-  { id: 'stirfry', label: '🥘 小炒', icon: '🥘' },
-  { id: 'cold', label: '🥒 凉菜', icon: '🥒' },
-  { id: 'bbq', label: '🔥 烧烤', icon: '🔥' },
-  { id: 'shrimp', label: '🦞 小龙虾', icon: '🦞' },
+  { id: 'hotpot', label: '🍲 谧境汤锅', icon: '🍲' },
+  { id: 'special', label: '🔥 藏地硬菜', icon: '🔥' },
+  { id: 'stirfry', label: '🥘 灶香小炒', icon: '🥘' },
+  { id: 'cold', label: '🥒 佐酒凉碟', icon: '🥒' },
+  { id: 'soup', label: '🥣 一碗暖汤', icon: '🥣' },
+  { id: 'coffee', label: '☕ 咖啡', icon: '☕' },
+  { id: 'cocktail', label: '🍸 微醺', icon: '🍸' },
+  { id: 'tea', label: '🍵 一盏清茶', icon: '🍵' },
 ];
 
 const MENU = {
   hotpot: [
     {
-      type: 'title', name: '云端泡椒魔芋鸭煲', sub: '红汤 · 麻辣', price: null,
-      desc: '鸭肉600g起 · 魔芋 · 泡椒锅底', emoji: '🦆',
+      type: 'title', name: '草原牦牛肉汤锅', sub: '白汤 / 红汤', price: null,
+      desc: '若尔盖本地牦牛 · 野生松茸 · 虫草花', emoji: '🥩',
       packages: [
-        { size: '2人餐', price: '298元', sides: '牦牛吊龙、青笋片、娃娃菜、土豆、花生米' },
-        { size: '3-4人餐', price: '398元', sides: '牦牛吊龙、脖仁、海鲜菇、凤尾、青笋片、宽粉、花生米' },
-        { size: '6-8人餐', price: '598元', sides: '牦牛吊龙、脖仁、匙仁、萝卜、娃娃菜、海鲜菇、青笋片、菠菜、藕片、花生米' },
+        { size: '2人餐', price: '298元', sides: '1斤熟牦牛肉（≈1.7斤生肉）+ 4份时蔬 + 花生米' },
+        { size: '4人餐', price: '398元', sides: '2斤熟牦牛肉（≈3.4斤生肉）+ 6份时蔬 + 花生米' },
+        { size: '6-8人餐', price: '498元', sides: '4斤熟牦牛肉（≈6.8斤生肉）+ 8份时蔬 + 花生米' },
       ]
     },
     {
-      type: 'title', name: '云端腊排骨鸡汤锅', sub: '清汤 / 红汤', price: null,
-      desc: '腊排+鸡肉 · 虫草花 · 鸡松茸', emoji: '🍗',
+      type: 'title', name: '草原小肥羊汤锅', sub: '清汤 / 红汤', price: null,
+      desc: '若尔盖本地绵羊 · 鲜切现煮 · 另加肉128元/斤', emoji: '🐏',
       packages: [
-        { size: '2人餐', price: '298元', sides: '牦牛吊龙、莲藕、土豆、菠菜、海鲜菇、花生米' },
-        { size: '3-4人餐', price: '498元', sides: '牦牛吊龙、匙仁、凤尾、萝卜、娃娃菜、菠菜、山药、花生米' },
-        { size: '6-8人餐', price: '698元', sides: '牦牛脖仁、牦牛匙仁、牦牛吊龙、黄瓜条、海鲜菇、萝卜、娃娃菜、菠菜、山药、青笋条、花生米' },
+        { size: '2人餐', price: '228元', sides: '1斤熟羊肉（≈1.7斤生肉）+ 4份时蔬' },
+        { size: '4人餐', price: '398元', sides: '2斤熟羊肉（≈3.4斤生肉）+ 6份时蔬' },
+        { size: '6-8人餐', price: '498元', sides: '4斤熟羊肉（≈6.8斤生肉）+ 8份时蔬' },
       ]
     },
-    {
-      type: 'title', name: '云端原汤牦牛汤锅', sub: '清汤 / 红汤', price: null,
-      desc: '牦牛腩600g起 · 野生松茸 · 虫草花', emoji: '🥩',
-      packages: [
-        { size: '2人餐', price: '398元', sides: '牦牛吊龙、青笋条、山药、菠菜、海鲜菇、花生米' },
-        { size: '3-4人餐', price: '698元', sides: '牦牛吊龙、牦牛匙仁、凤尾、冬瓜、菠菜、娃娃菜、山药、花生米' },
-        { size: '6-8人餐', price: '998元', sides: '牦牛脖仁、牦牛匙仁、牦牛吊龙、海鲜菇、娃娃菜、菠菜、山药、南瓜、青笋条、花生米' },
-      ]
-    },
+  ],
+  special: [
+    { type: 'dish', name: '干锅肥肠', desc: '干香麻辣，越嚼越香', price: '158元', emoji: '🥘' },
+    { type: 'dish', name: '干锅排骨', desc: '排骨焦香，配菜丰富', price: '138元', emoji: '🦴' },
+    { type: 'dish', name: '酸菜肥肠', desc: '酸菜解腻，肥肠入味', price: '128元', emoji: '🥬' },
+    { type: 'dish', name: '江湖毛血旺', desc: '鸭血毛肚黄喉，麻辣过瘾', price: '128元', emoji: '🩸' },
+    { type: 'dish', name: '金汤酸菜鱼', desc: '金汤酸爽，鱼片嫩滑', price: '128元', emoji: '🍋' },
+    { type: 'dish', name: '川味水煮鱼', desc: '麻辣滚烫，鱼片滑嫩', price: '128元', emoji: '🐟' },
+    { type: 'dish', name: '泡豇豆跳水鱼', desc: '泡豇豆酸辣，鱼鲜入味', price: '128元', emoji: '🐠' },
+    { type: 'dish', name: '红烧肥肠', desc: '软糯入味，红烧经典', price: '108元', emoji: '🍖' },
+    { type: 'dish', name: '清烧排骨', desc: '清淡鲜美，排骨软烂', price: '108元', emoji: '🦴' },
+    { type: 'dish', name: '水煮牦牛肉', desc: '高原牦牛，麻辣鲜嫩', price: '98元', emoji: '🥩' },
+    { type: 'dish', name: '红烧排骨', desc: '酱香浓郁，骨酥肉烂', price: '98元', emoji: '🍖' },
+    { type: 'dish', name: '水煮肉片', desc: '麻辣滚烫，川味之魂', price: '88元', emoji: '🌶️' },
   ],
   stirfry: [
-    { type: 'dish', name: '藏香猪回锅肉', desc: '川味经典 · 藏香猪 · 蒜苗', price: '128元', emoji: '🐷' },
-    { type: 'dish', name: '小炒牦牛肉', desc: '猛火爆炒 · 牦牛肉 · 锅气十足', price: '78元', emoji: '🥩' },
-    { type: 'dish', name: '阿妈味道香肠', desc: '川式腊香肠 · 蒜香', price: '58元', emoji: '🌭' },
-    { type: 'dish', name: '云端秘制板鸭', desc: '秘制风味 · 板鸭', price: '88元', emoji: '🦆' },
-    { type: 'dish', name: '蒜苗回锅肉', desc: '蒜苗 · 回锅肉', price: '58元', emoji: '🐷' },
-    { type: 'dish', name: '羌寨老腊肉', desc: '羌寨传统 · 老腊肉', price: '78元', emoji: '🥓' },
-    { type: 'dish', name: '番茄炒蛋', desc: '酸甜家常', price: '28元', emoji: '🍳' },
-    { type: 'dish', name: '酸辣土豆丝', desc: '酸辣爽口', price: '28元', emoji: '🥔' },
-    { type: 'dish', name: '蒜泥凤尾', desc: '蒜香蔬菜', price: '28元', emoji: '🥬' },
-    { type: 'dish', name: '炝炒莲白', desc: '爆炒莲白', price: '28元', emoji: '🥬' },
-    { type: 'dish', name: '紫菜蛋花汤', desc: '汤品', price: '28元', emoji: '🍲' },
-    { type: 'dish', name: '煎蛋汤', desc: '汤品', price: '28元', emoji: '🍲' },
-    { type: 'dish', name: '水晶滑肉汤', desc: '汤品', price: '38元', emoji: '🍲' },
+    { type: 'dish', name: '泡椒牦牛肉', desc: '若尔盖牦牛，泡椒爆炒', price: '98元', emoji: '🥩' },
+    { type: 'dish', name: '腊肉回锅', desc: '高原老腊肉，蒜苗回锅', price: '88元', emoji: '🐷' },
+    { type: 'dish', name: '牦牛肉丝炒芥菜', desc: '牦牛肉丝配芥菜，高原风味', price: '88元', emoji: '🥬' },
+    { type: 'dish', name: '腊肉花菜', desc: '腊肉咸香，花菜脆甜', price: '68元', emoji: '🥦' },
+    { type: 'dish', name: '老成都回锅肉', desc: '蒜苗/尖椒，经典川味', price: '58元', emoji: '🐷' },
+    { type: 'dish', name: '京酱肉丝', desc: '酱香浓郁，京味川做', price: '58元', emoji: '🥢' },
+    { type: 'dish', name: '鱼香肉丝', desc: '经典鱼香，酸甜微辣', price: '48元', emoji: '🥕' },
+    { type: 'dish', name: '青椒肉丝', desc: '青椒爽脆，肉丝嫩滑', price: '48元', emoji: '🫑' },
+    { type: 'dish', name: '木耳青笋肉片', desc: '木耳脆爽，青笋清香', price: '48元', emoji: '🥒' },
+    { type: 'dish', name: '麻辣豆腐', desc: '麻辣烫香，下饭神器', price: '38元', emoji: '🧈' },
+    { type: 'dish', name: '西红柿炒蛋', desc: '家常味道，酸甜可口', price: '38元', emoji: '🍳' },
+    { type: 'dish', name: '炒土豆丝', desc: '酸辣脆爽，经典下饭菜', price: '28元', emoji: '🥔' },
+    { type: 'dish', name: '豆角茄子', desc: '软糯入味，家常经典', price: '38元', emoji: '🍆' },
+    { type: 'dish', name: '山药炒木耳', desc: '滑脆爽口，养生小炒', price: '38元', emoji: '🪵' },
+    { type: 'dish', name: '清炒时蔬', desc: '当日鲜蔬，原味清炒', price: '28元', emoji: '🥬' },
   ],
   cold: [
-    { type: 'dish', name: '凉拌黄瓜', desc: '凉菜小食', price: '18元/份', emoji: '🥒' },
-    { type: 'dish', name: '香酥花生米', desc: '凉菜小食', price: '18元/份', emoji: '🥜' },
-    { type: 'dish', name: '秘卤牦牛肉', desc: '秘卤风味', price: '68元/份', emoji: '🥩' },
-    { type: 'dish', name: '麻辣冷吃兔', desc: '麻辣冷吃', price: '58元/份', emoji: '🐰' },
-    { type: 'dish', name: '手工小酥肉', desc: '手工酥肉', price: '28元/份', emoji: '🍖' },
-    { type: 'dish', name: '麻酱怪味花生米', desc: '麻酱风味', price: '18元/份', emoji: '🥜' },
+    { type: 'dish', name: '卤菜拼盘', desc: '多味卤制，下酒一绝', price: '108元', emoji: '🍗' },
+    { type: 'dish', name: '拌肥肠', desc: '凉拌肥肠，麻辣鲜香', price: '98元', emoji: '🥘' },
+    { type: 'dish', name: '卤肥肠', desc: '卤制肥肠，软糯入味', price: '98元', emoji: '🍖' },
+    { type: 'dish', name: '红油耳片', desc: '红油猪耳，脆爽弹牙', price: '88元', emoji: '👂' },
+    { type: 'dish', name: '卤猪耳朵', desc: '卤香猪耳，下酒绝配', price: '88元', emoji: '🐷' },
+    { type: 'dish', name: '蒜泥白肉', desc: '薄片透光，蒜香浓郁', price: '58元', emoji: '🥩' },
+    { type: 'dish', name: '现炸小酥肉', desc: '外酥里嫩，椒麻鲜香', price: '58元', emoji: '🍖' },
+    { type: 'dish', name: '蒜泥黄瓜', desc: '刀拍黄瓜，清爽解腻', price: '28元', emoji: '🥒' },
+    { type: 'dish', name: '山椒木耳', desc: '山椒提味，木耳脆爽', price: '28元', emoji: '🌶️' },
   ],
-  shrimp: [
-    {
-      type: 'title', name: '云端口味虾', sub: '夏日限定', price: null, emoji: '🦞',
-      packages: [
-        { size: '麻辣嗦指小龙虾', price: '68元/斤', sides: '两斤起售' },
-        { size: '经典蒜蓉小龙虾', price: '68元/斤', sides: '两斤起售' },
-        { size: '招牌卤味小龙虾', price: '68元/斤', sides: '两斤起售' },
-        { size: '泡椒火锅小龙虾', price: '68元/斤', sides: '两斤起售' },
-      ]
-    },
+  soup: [
+    { type: 'dish', name: '平菇肉片汤', desc: '鲜菇滑肉，清淡鲜美', price: '48元', emoji: '🍄' },
+    { type: 'dish', name: '连锅汤', desc: '川味连锅，暖心暖胃', price: '48元', emoji: '🍲' },
+    { type: 'dish', name: '紫菜蛋花汤', desc: '清淡鲜美，蛋花漂汤', price: '28元', emoji: '🥚' },
+    { type: 'dish', name: '酸菜粉丝汤', desc: '酸爽解腻，粉丝滑溜', price: '28元', emoji: '🥣' },
+    { type: 'dish', name: '西红柿煎蛋汤', desc: '酸甜开胃，暖心暖胃', price: '38元', emoji: '🍅' },
   ],
-  bbq: [
-    { type: 'dish', name: '原味高原牦牛肉·吊龙', desc: '150g · 片状 · 原味', price: '68元', emoji: '🥩' },
-    { type: 'dish', name: '藏香秘制牦牛肉·雪花', desc: '150g · 窄条 · 原味', price: '78元', emoji: '🥩' },
-    { type: 'dish', name: '秘制香辣牦牛肉·雪花', desc: '150g · 窄条 · 腌制', price: '78元', emoji: '🌶️' },
-    { type: 'dish', name: '秘制香辣藏香猪五花', desc: '150g · 片状 · 腌制', price: '78元', emoji: '🐷' },
-    { type: 'dish', name: '秘制牦牛舌', desc: '100g · 片状 · 腌制', price: '88元', emoji: '🐄' },
-    { type: 'dish', name: '原切高山猪五花', desc: '150g · 片状 · 原味', price: '58元', emoji: '🐷' },
-    { type: 'dish', name: '藏香蜜汁鸡中翅', desc: '4个 · 藤椒/香辣', price: '48元', emoji: '🍗' },
-    { type: 'dish', name: '秘制猪小肠', desc: '150g · 段 · 腌制', price: '58元', emoji: '🐷' },
-    { type: 'dish', name: '泡椒小鲫鱼', desc: '2条 · 整条 · 腌制', price: '58元', emoji: '🐟' },
-    { type: 'dish', name: '高山彩椒羊肉串', desc: '4串 · 块状中大串 · 原味', price: '68元', emoji: '🐏' },
-    { type: 'dish', name: '安格斯原味和牛M5', desc: '150g · 宽条状 · 不宜久烤', price: '88元', emoji: '🥩' },
-    { type: 'dish', name: '安格斯原味和牛M8', desc: '150g · 宽条状 · 不宜久烤', price: '98元', emoji: '🥩' },
-    { type: 'dish', name: '— 素菜 —', desc: '生菜、金针菇、杏鲍菇、韭菜等', price: '', emoji: '🥬' },
-    { type: 'dish', name: '菌类拼盘', desc: '150g', price: '38元', emoji: '🍄' },
-    { type: 'dish', name: '高山土豆片', desc: '100g', price: '38元', emoji: '🥔' },
-    { type: 'dish', name: '手工馒头', desc: '4个', price: '28元', emoji: '🥟' },
+  coffee: [
+    { type: 'section', name: '美式与黑咖', cls: '' },
+    { type: 'dish', name: '冰美式 / 热美式', desc: '意式浓缩撞冰水，纯粹冰爽', price: '38元', emoji: '🧊' },
+    { type: 'dish', name: '黑咖啡', desc: '纯黑无糖，豆脂醇香', price: '38元', emoji: '☕' },
+    { type: 'section', name: '风味咖啡', cls: '' },
+    { type: 'dish', name: '香草拿铁', desc: '马达加斯加香草，温柔清甜', price: '48元', emoji: '🌿' },
+    { type: 'dish', name: '水溶C美式', desc: '维C融入美式，鲜活清爽', price: '48元', emoji: '🍋' },
+    { type: 'dish', name: '卡布奇诺', desc: '厚密奶泡，肉桂可可点睛', price: '48元', emoji: '🤎' },
+    { type: 'dish', name: '原味拿铁', desc: '浓缩撞鲜奶，经典丝滑', price: '48元', emoji: '🥛' },
+    { type: 'dish', name: '焦糖拿铁', desc: '焦糖融入浓缩，甜而不腻', price: '48元', emoji: '🍮' },
+    { type: 'dish', name: '橙C美式', desc: '鲜橙撞美式，果咖新风', price: '48元', emoji: '🍊' },
+    { type: 'dish', name: '高原沙冰美式', desc: '沙冰质地，一口沁凉入魂', price: '58元', emoji: '🏔️' },
+    { type: 'dish', name: '青稞拿铁', desc: '藏地青稞，高原谷物醇香', price: '58元', emoji: '🌾' },
+    { type: 'dish', name: '焦糖玛奇朵', desc: '焦糖挂壁，奶咖分层', price: '58元', emoji: '☕' },
+  ],
+  cocktail: [
+    { type: 'section', name: '微 醺', cls: 'cocktail' },
+    { type: 'dish', name: '咖啡威士忌', desc: '咖啡撞威士忌，异域狂想', price: '88元', emoji: '🥃' },
+    { type: 'dish', name: '冰岛', desc: '冰镇烈酒，纯粹而凌厉', price: '88元', emoji: '🧊' },
+    { type: 'dish', name: '一见钟情', desc: '莓果初绽，一眼万年', price: '88元', emoji: '💘' },
+    { type: 'dish', name: '初恋', desc: '酸甜青涩，如初次悸动', price: '88元', emoji: '💕' },
+    { type: 'dish', name: '离别信', desc: '微苦回甘，余韵悠长', price: '88元', emoji: '✉️' },
+    { type: 'dish', name: '想见你', desc: '花果缠绵，温柔入骨', price: '98元', emoji: '💌' },
+    { type: 'dish', name: '龙舌兰日出', desc: '红石榴橙汁渐层，美如朝阳', price: '108元', emoji: '🌅' },
+    { type: 'dish', name: '夏日的梦', desc: '热带果风，清凉如幻', price: '108元', emoji: '🌴' },
+    { type: 'dish', name: '不止心动', desc: '层层果韵，不止心动而已', price: '108元', emoji: '💗' },
+    { type: 'dish', name: '长岛冰茶', desc: '五种烈酒暗藏，茶色温柔刀', price: '118元', emoji: '🍹' },
+  ],
+  tea: [
+    { type: 'dish', name: '特级茉莉花茶', desc: '七窨茉莉，花香入骨', price: '15元/杯', emoji: '🌸' },
+    { type: 'dish', name: '安溪铁观音', desc: '兰花香，七泡有余香', price: '20元/杯', emoji: '🍃' },
+    { type: 'dish', name: '茉莉龙珠', desc: '珠形茉莉，遇水绽放', price: '25元/杯', emoji: '⚪' },
+    { type: 'dish', name: '高山云雾绿茶', desc: '高山云雾出好茶，清冽回甘', price: '25元/杯', emoji: '🌿' },
+    { type: 'dish', name: '新会小青柑', desc: '柑香茶醇，一泡入魂', price: '30元/杯', emoji: '🍊' },
+    { type: 'dish', name: '蜜香金骏眉', desc: '蜜香馥郁，红茶之巅', price: '35元/杯', emoji: '🍯' },
   ],
 };
 
+function cartBtnHTML(name, price) {
+  const key = name + '|' + price;
+  const qty = cart[key] || 0;
+  const priceNum = parseInt(price) || 0;
+  if (!priceNum) return '';
+  if (qty === 0) {
+    return `<div class="dish-actions"><button class="qty-btn add" onclick="event.stopPropagation();addToCart('${name}','${price}')">+</button></div>`;
+  }
+  return `<div class="dish-actions">
+    <button class="qty-btn" onclick="event.stopPropagation();removeFromCart('${name}','${price}')">−</button>
+    <span class="qty-num">${qty}</span>
+    <button class="qty-btn add" onclick="event.stopPropagation();addToCart('${name}','${price}')">+</button>
+  </div>`;
+}
+
 function renderPK(pack) {
+  const btn = cartBtnHTML(pack.size, pack.price);
   return `
     <div class="pk-item">
       <div class="pk-size">${pack.size}</div>
+      ${btn}
       <div class="pk-price">${pack.price}</div>
     </div>
     ${pack.sides ? `<div class="pk-sides show">${pack.sides}</div>` : ''}`;
 }
 
 function renderDish(item) {
+  const btn = cartBtnHTML(item.name, item.price);
   return `
     <div class="dish-card">
       <div class="dish-emoji">${item.emoji}</div>
@@ -381,6 +649,7 @@ function renderDish(item) {
         ${item.desc ? `<div class="dish-desc">${item.desc}</div>` : ''}
       </div>
       ${item.price ? `<div class="dish-price">${item.price}</div>` : ''}
+      ${btn}
     </div>`;
 }
 
@@ -396,6 +665,9 @@ function renderSection(section) {
       ${section.packages.map(renderPK).join('')}
     </div>`;
   }
+  if (section.type === 'section') {
+    return `<div class="drink-section ${section.cls || ''}">${section.name}</div>`;
+  }
   return renderDish(section);
 }
 
@@ -405,11 +677,212 @@ function renderCat(catId) {
   return cat.map(renderSection).join('');
 }
 
+// --- Table detection ---
+const urlParams = new URLSearchParams(window.location.search);
+const tableNum = urlParams.get('t') || urlParams.get('table');
+if (tableNum) {
+  const badge = document.getElementById('table-badge');
+  badge.textContent = '📍 ' + tableNum + '号桌';
+  badge.classList.remove('hidden');
+  document.getElementById('table-no').style.display = 'none';
+  document.getElementById('table-label').textContent = '桌号：' + tableNum + '号桌';
+  document.getElementById('table-no-hidden').value = tableNum + '号桌';
+}
+
+// --- Cart ---
+let cart = {};
+function saveCart() { try { localStorage.setItem('meiduo_cart', JSON.stringify(cart)); } catch(e) {} }
+function loadCart() { try { const s = localStorage.getItem('meiduo_cart'); if (s) cart = JSON.parse(s); } catch(e) {} }
+function addToCart(name, price) {
+  const key = name + '|' + price;
+  cart[key] = (cart[key] || 0) + 1;
+  saveCart(); refreshMenu();
+}
+function removeFromCart(name, price) {
+  const key = name + '|' + price;
+  if (cart[key] > 0) cart[key]--;
+  if (cart[key] === 0) delete cart[key];
+  saveCart(); refreshMenu();
+}
+function getCartTotal() {
+  let total = 0;
+  for (const [key, qty] of Object.entries(cart)) {
+    const price = parseInt(key.split('|')[1]) || 0;
+    total += price * qty;
+  }
+  return total;
+}
+function getCartCount() {
+  return Object.values(cart).reduce((a, b) => a + b, 0);
+}
+function refreshMenu() {
+  const active = document.querySelector('.tab.active');
+  if (active) {
+    document.getElementById('menu-content').innerHTML = renderCat(active.dataset.cat);
+  }
+  renderCartBar();
+}
+function renderCartBar() {
+  const count = getCartCount();
+  const total = getCartTotal();
+  const bar = document.getElementById('cart-bar');
+  const countEl = document.getElementById('cart-count');
+  const totalEl = document.getElementById('cart-total');
+  if (count === 0) {
+    bar.classList.add('hidden');
+  } else {
+    bar.classList.remove('hidden');
+    countEl.textContent = `已选 ${count} 件`;
+    totalEl.textContent = `合计 ¥${total}`;
+  }
+}
+
+// --- Order ---
+document.getElementById('cart-info').addEventListener('click', openOrder);
+document.getElementById('cart-submit').addEventListener('click', openOrder);
+document.getElementById('btn-close').addEventListener('click', closeOrder);
+document.getElementById('order-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeOrder();
+});
+document.getElementById('btn-copy').addEventListener('click', copyOrder);
+
+function openOrder() {
+  const items = document.getElementById('order-items');
+  let html = '';
+  for (const [key, qty] of Object.entries(cart)) {
+    const [name, price] = key.split('|');
+    const sub = parseInt(price) * qty;
+    html += `<div class="order-item">
+      <span class="oi-name">${name}</span>
+      <span class="oi-qty">×${qty}</span>
+      <span class="oi-sub">¥${sub}</span>
+    </div>`;
+  }
+  items.innerHTML = html;
+  document.getElementById('order-total').textContent = '¥' + getCartTotal();
+  document.getElementById('order-overlay').classList.add('show');
+}
+
+function closeOrder() {
+  document.getElementById('order-overlay').classList.remove('show');
+}
+
+async function copyOrder() {
+  const table = document.getElementById('table-no-hidden').value || document.getElementById('table-no').value || '未填';
+
+  // Build items array
+  const items = [];
+  for (const [key, qty] of Object.entries(cart)) {
+    const [name, price] = key.split('|');
+    items.push({ name, price, qty });
+  }
+  const total = getCartTotal();
+
+  // Try to POST to backend
+  try {
+    const resp = await fetch('http://47.108.86.81/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ table_no: table, items, total })
+    });
+    if (resp.ok) {
+      // Save to localStorage for this table
+      const key = 'meiduo_order_' + table;
+      let saved = [];
+      try { saved = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) {}
+      saved.push({ time: new Date().toLocaleTimeString('zh-CN'), items, total });
+      localStorage.setItem(key, JSON.stringify(saved));
+      showOrderConfirm(table, items, total);
+      cart = {}; saveCart(); refreshMenu(); closeOrder(); checkMyOrders();
+      checkMyOrders();
+      return;
+    }
+  } catch(e) { /* fallback to clipboard */ }
+
+  // Fallback: copy to clipboard
+  let text = `梅朵冈兰 · 谧境 | 云境膳堂\n桌号：${table}\n────────────────\n`;
+  for (const [key, qty] of Object.entries(cart)) {
+    const [name, price] = key.split('|');
+    text += `${name}  ×${qty}  ¥${parseInt(price) * qty}\n`;
+  }
+  text += `────────────────\n合计：¥${total}\n${new Date().toLocaleString('zh-CN')}`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('已复制，去微信粘贴发送');
+  }).catch(() => {
+    showToast('复制失败，请截图发送');
+  });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function showOrderConfirm(table, items, total) {
+  const el = document.getElementById('confirm-items');
+  el.innerHTML = items.map(i => `<div class=confirm-item><span>${i.name} ×${i.qty}</span><span style="color:var(--gold)">¥${(parseInt(i.price)||0)*i.qty}</span></div>`).join('');
+  document.getElementById('confirm-total').textContent = '合计 ¥' + total;
+  // Show history
+  showConfirmHistory(table);
+  document.getElementById('confirm-overlay').classList.add('show');
+}
+function showConfirmHistory(table) {
+  const key = 'meiduo_order_' + table;
+  let saved = [];
+  try { saved = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) {}
+  const el = document.getElementById('confirm-history');
+  if (saved.length <= 1) { el.innerHTML = ''; return; }
+  const prev = saved.slice(0, -1).reverse();
+  el.innerHTML = '<div style="font-size:11px;color:var(--text-sub);margin-bottom:4px;">历史订单</div>' + prev.map(o => `
+    <div class=old-order>
+      <div class=oo-time>🕐 ${o.time}</div>
+      <div class=oo-item>${o.items.map(i=>i.name+'×'+i.qty).join('，')}</div>
+      <div style="color:var(--gold);font-size:11px;">¥${o.total}</div>
+    </div>`).join('');
+}
+function closeConfirm() {
+  document.getElementById('confirm-overlay').classList.remove('show');
+}
+function showMyOrders() {
+  const table = document.getElementById('table-no-hidden').value || urlParams.get('t') + '号桌' || '未知桌';
+  const key = 'meiduo_order_' + table;
+  let saved = [];
+  try { saved = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) {}
+  if (!saved.length) { showToast('暂无订单记录'); return; }
+  // Fake showOrderConfirm with last order
+  showOrderConfirm(table, [], 0);
+  document.getElementById('confirm-items').innerHTML = saved[saved.length-1].items.map(i => `<div class=confirm-item><span>${i.name} ×${i.qty}</span><span style="color:var(--gold)">¥${(parseInt(i.price)||0)*i.qty}</span></div>`).join('');
+  document.getElementById('confirm-total').textContent = '合计 ¥' + saved[saved.length-1].total;
+  showConfirmHistory(table);
+}
+function checkMyOrders() {
+  const table = urlParams.get('t');
+  if (!table) return;
+  const key = 'meiduo_order_' + table + '号桌';
+  let saved = [];
+  try { saved = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) {}
+  if (saved.length > 0) {
+    document.getElementById('my-orders-btn').classList.add('show');
+  }
+}
+checkMyOrders();
+
 function buildTabs() {
   const tabsEl = document.getElementById('tabs');
-  CATEGORIES.forEach(c => {
+  CATEGORIES.forEach((c, i) => {
+    if (c.id === 'coffee') {
+      const sep = document.createElement('span');
+      sep.className = 'tab-sep';
+      tabsEl.appendChild(sep);
+    }
     const btn = document.createElement('button');
-    btn.className = 'tab' + (c.id === 'hotpot' ? ' active' : '');
+    let cls = 'tab';
+    if (c.id === 'hotpot') cls += ' active';
+    if (c.id === 'coffee' || c.id === 'cocktail' || c.id === 'tea') cls += ' highlight';
+    btn.className = cls;
     btn.textContent = c.label;
     btn.dataset.cat = c.id;
     btn.addEventListener('click', () => {
@@ -422,10 +895,10 @@ function buildTabs() {
   });
 }
 
-// Build tab bar
+loadCart();
 buildTabs();
-// Show hotpot by default
 document.getElementById('menu-content').innerHTML = renderCat('hotpot');
+renderCartBar();
 </script>
 </body>
 </html>
